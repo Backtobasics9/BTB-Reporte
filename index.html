@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <title>BTB · Reporte Semestral</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       PALETA ALTIA · Mobile-first
+       ============================================================ */
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    
+    :root {
+      /* ALTIA brand */
+      --altia-azul: #1A364C;
+      --altia-verde: #757F67;
+      --altia-crema: #F0EDE6;
+      --altia-gris: #032042;
+      --altia-blanco: #FFFFFF;
+      --altia-azul-claro: #2F4D67;
+      --altia-verde-claro: #939B85;
+      --altia-divider: rgba(26, 54, 76, 0.12);
+      --altia-divider-strong: rgba(26, 54, 76, 0.25);
+      --altia-text-suave: #5A6878;
+      --altia-positive: #4A7C59;
+      --altia-negative: #A04545;
+      
+      /* Vraba (se mantiene para sus tabs) */
+      --vraba-green: #3B4D3A;
+      --vraba-orange: #FF671F;
+      --vraba-cream: #FFF0E5;
+      
+      --font-display: 'Newsreader', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: var(--font-body);
+      background: var(--altia-crema);
+      color: var(--altia-gris);
+      line-height: 1.55;
+      font-size: 14px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* ============================================================
+       NAV (sticky superior, aparece al scrollear)
+       ============================================================ */
+    
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(240, 237, 230, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 11px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      border-bottom: 1px solid var(--altia-divider);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .nav.hidden { 
+      opacity: 0; 
+      pointer-events: none; 
+      transform: translateY(-100%);
+    }
+    
+    .nav-brand {
+      font-family: var(--font-body);
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      font-size: 11px;
+      color: var(--altia-azul);
+    }
+    
+    .nav-links { display: flex; gap: 2px; }
+    
+    .nav-link {
+      padding: 5px 9px;
+      font-size: 10px;
+      color: var(--altia-text-suave);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      letter-spacing: 1px;
+      border-radius: 4px;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .nav-link:hover { color: var(--altia-azul); background: rgba(26,54,76,0.05); }
+    
+    /* ============================================================
+       HERO · Portada ALTIA minimalista
+       ============================================================ */
+    
+    .hero {
+      min-height: 100vh;
+      background: var(--altia-crema);
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 60px 24px 80px;
+    }
+    
+    .hero-line-top {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      right: 24px;
+      height: 1px;
+      background: var(--altia-divider);
+    }
+    
+    .hero-content {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .hero-meta-top {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--altia-verde);
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+    
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(30px, 8vw, 76px);
+      line-height: 1;
+      color: var(--altia-azul);
+      letter-spacing: -1px;
+      margin-bottom: 22px;
+      white-space: nowrap;
+    }
+    
+    .hero .hero-sub {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(17px, 4vw, 24px);
+      color: var(--altia-verde);
+      margin-bottom: 38px;
+      line-height: 1.4;
+    }
+    
+    .hero-divider {
+      height: 1px;
+      width: 64px;
+      background: var(--altia-azul);
+      margin-bottom: 30px;
+    }
+    
+    .hero-detalle {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--altia-text-suave);
+      line-height: 2;
+    }
+    
+    .rep-selector { margin-top: 34px; }
+    .rep-label {
+      font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--altia-verde); font-weight: 700; margin-bottom: 10px;
+    }
+    .rep-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+    .rep-btn {
+      font-family: inherit; font-size: 11px; letter-spacing: 0.8px;
+      padding: 8px 14px; border-radius: 18px; cursor: pointer;
+      background: transparent; color: var(--altia-azul);
+      border: 1px solid var(--altia-divider-strong); transition: all 0.2s;
+    }
+    .rep-btn:hover { border-color: var(--altia-azul); }
+    .rep-btn.active { background: var(--altia-azul); color: var(--altia-blanco); border-color: var(--altia-azul); }
+    .tabla-reporte .fila-inversion td { font-style: italic; color: var(--altia-text-suave); }
+    .tabla-reporte .fila-inversion td.concepto { color: var(--altia-blanco); }
+    .narrativa-block a { color: var(--altia-azul); text-decoration: underline; word-break: break-all; }
+    
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--altia-text-suave);
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      animation: bounce 2.4s infinite;
+      font-weight: 500;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
+      50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+    }
+    
+    /* ============================================================
+       SECCIONES BASE
+       ============================================================ */
+    
+    section {
+      padding: 56px 18px;
+    }
+    
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-eyebrow {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--altia-verde);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(26px, 6vw, 38px);
+      color: var(--altia-azul);
+      margin-bottom: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+    }
+    
+    /* ============================================================
+       KPIs HERO
+       ============================================================ */
+    
+    .kpis-section {
+      background: var(--altia-blanco);
+      border-top: 1px solid var(--altia-divider);
+      border-bottom: 1px solid var(--altia-divider);
+    }
+    
+    .kpis-tabs {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--altia-divider);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .kpi-tab {
+      padding: 10px 14px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      color: var(--altia-text-suave);
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .kpi-tab:hover { color: var(--altia-azul); }
+    .kpi-tab.active {
+      color: var(--altia-azul);
+      border-bottom-color: var(--altia-verde);
+      font-weight: 700;
+    }
+    
+    .kpis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--altia-divider);
+      border: 1px solid var(--altia-divider);
+    }
+    
+    .kpi-card {
+      background: var(--altia-blanco);
+      padding: 18px 14px;
+    }
+    
+    .kpi-card .kpi-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--altia-text-suave);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .kpi-card .kpi-value {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(20px, 5.5vw, 32px);
+      color: var(--altia-azul);
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+    
+    .kpi-card .kpi-sub {
+      font-size: 10px;
+      color: var(--altia-text-suave);
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+    }
+    
+    .kpi-card.positivo .kpi-value { color: var(--altia-positive); }
+    .kpi-card.negativo .kpi-value { color: var(--altia-negative); }
+    
+    /* ============================================================
+       NARRATIVA
+       ============================================================ */
+    
+    .narrativa-section {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .narrativa-block {
+      margin-bottom: 36px;
+    }
+    
+    .narrativa-block p {
+      color: var(--altia-gris);
+      font-size: 14px;
+      line-height: 1.75;
+      margin-bottom: 14px;
+      font-weight: 400;
+    }
+    
+    .narrativa-block .item-lista {
+      color: var(--altia-gris);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 10px;
+      padding-left: 16px;
+      position: relative;
+    }
+    
+    .narrativa-block .item-lista:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px;
+      height: 1px;
+      background: var(--altia-verde);
+    }
+    
+    .narrativa-block strong { color: var(--altia-azul); font-weight: 600; }
+    .narrativa-block em { font-style: italic; color: var(--altia-verde); }
+    
+    /* ============================================================
+       TABLA (sin drill-down)
+       ============================================================ */
+    
+    .tabla-section {
+      background: var(--altia-blanco);
+      border-top: 1px solid var(--altia-divider);
+      border-bottom: 1px solid var(--altia-divider);
+    }
+    
+    .tabla-tabs {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--altia-divider);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .tabla-tab {
+      padding: 10px 14px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      color: var(--altia-text-suave);
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tabla-tab:hover { color: var(--altia-azul); }
+    .tabla-tab.active {
+      color: var(--altia-azul);
+      border-bottom-color: var(--altia-verde);
+      font-weight: 700;
+    }
+    .tabla-tab[data-local="vraba"].active { 
+      color: var(--vraba-green); 
+      border-bottom-color: var(--vraba-orange); 
+    }
+    
+    .tabla-wrap {
+      background: var(--altia-blanco);
+      border: 1px solid var(--altia-divider);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+      max-height: 60vh;
+    }
+    
+    .tabla-reporte {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+    
+    .tabla-reporte th, .tabla-reporte td {
+      box-shadow: inset -1px -1px 0 var(--altia-divider);
+    }
+    
+    .tabla-reporte thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--altia-azul);
+      color: var(--altia-blanco);
+      padding: 9px 6px;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    
+    .tabla-reporte thead th.col-concepto,
+    .tabla-reporte tbody td.concepto {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      min-width: 110px;
+      max-width: 110px;
+      width: 110px;
+      text-align: left;
+      padding: 9px 10px;
+      background: var(--altia-azul);
+      color: var(--altia-blanco);
+      font-weight: 600;
+      font-size: 10.5px;
+      box-shadow: inset -2px -1px 0 var(--altia-divider), 2px 0 4px rgba(0,0,0,0.06);
+      white-space: normal;
+      line-height: 1.2;
+    }
+    .tabla-reporte thead th.col-concepto { z-index: 3; }
+    
+    .tabla-reporte thead th.col-total {
+      background: var(--altia-verde);
+    }
+    
+    .tabla-reporte tbody td {
+      padding: 9px 5px;
+      text-align: right;
+      white-space: nowrap;
+      font-size: 10.5px;
+      line-height: 1.3;
+      background: var(--altia-blanco);
+    }
+    
+    .tabla-reporte tbody tr:nth-child(even) td:not(.concepto) {
+      background: rgba(240, 237, 230, 0.4);
+    }
+    
+    .tabla-reporte tbody td .monto-cel {
+      display: block;
+      font-weight: 500;
+    }
+    .tabla-reporte tbody td .porc-cel {
+      display: block;
+      font-size: 9px;
+      color: var(--altia-text-suave);
+      font-weight: 400;
+      margin-top: 1px;
+    }
+    
+    .tabla-reporte .fila-resultado td {
+      background: rgba(117, 127, 103, 0.08) !important;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 12px 5px;
+    }
+    .tabla-reporte .fila-resultado td.concepto {
+      background: var(--altia-azul) !important;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .tabla-reporte .fila-resultado td .monto-cel { font-weight: 700; }
+    
+    .tabla-reporte .col-total-celda {
+      font-weight: 700;
+      color: var(--altia-azul);
+      background: rgba(117, 127, 103, 0.10) !important;
+      box-shadow: inset 3px 0 0 var(--altia-verde), inset -1px -1px 0 var(--altia-divider);
+    }
+    
+    .tabla-reporte .neg { color: var(--altia-negative); }
+    
+    /* Vraba: header en verde oliva en lugar de azul */
+    .tabla-wrap.vraba-theme .tabla-reporte thead th { background: var(--vraba-green); }
+    .tabla-wrap.vraba-theme .tabla-reporte thead th.col-total { background: var(--vraba-orange); }
+    .tabla-wrap.vraba-theme .tabla-reporte tbody td.concepto { background: var(--vraba-green); }
+    .tabla-wrap.vraba-theme .tabla-reporte .fila-resultado td.concepto { background: var(--vraba-green) !important; }
+    .tabla-wrap.vraba-theme .tabla-reporte .col-total-celda {
+      background: rgba(255,103,31,0.08) !important;
+      box-shadow: inset 3px 0 0 var(--vraba-orange), inset -1px -1px 0 var(--altia-divider);
+    }
+    
+    .aviso-tabla {
+      font-size: 10px;
+      color: var(--altia-text-suave);
+      margin-top: 10px;
+      font-style: italic;
+      line-height: 1.5;
+    }
+    
+    /* ============================================================
+       GRÁFICOS
+       ============================================================ */
+    
+    .graficos-section {
+      background: var(--altia-crema);
+    }
+    
+    .graficos-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 20px;
+    }
+    
+    .grafico-card {
+      background: var(--altia-blanco);
+      border: 1px solid var(--altia-divider);
+      padding: 16px 14px 12px;
+    }
+    
+    .grafico-card h4 {
+      font-size: 10px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--altia-verde);
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+    
+    .grafico-wrap {
+      position: relative;
+      height: 240px;
+    }
+    
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    
+    .footer {
+      background: var(--altia-azul);
+      color: rgba(255,255,255,0.85);
+      padding: 40px 24px 24px;
+      text-align: center;
+    }
+    
+    .footer-brand {
+      font-family: var(--font-body);
+      font-weight: 700;
+      letter-spacing: 4px;
+      font-size: 13px;
+      color: var(--altia-blanco);
+      margin-bottom: 8px;
+    }
+    
+    .footer-line {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.55);
+      margin: 8px 0;
+    }
+    
+    .footer-mail {
+      color: var(--altia-crema);
+      text-decoration: none;
+    }
+    
+    .footer-update {
+      margin-top: 18px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.3px;
+    }
+    
+    .btn-actualizar {
+      display: inline-block;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.8);
+      padding: 4px 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 9px;
+      font-family: inherit;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-left: 10px;
+      transition: all 0.2s;
+    }
+    .btn-actualizar:hover { background: var(--altia-blanco); color: var(--altia-azul); border-color: var(--altia-blanco); }
+    
+    /* ============================================================
+       LOADING / ERROR
+       ============================================================ */
+    
+    .loading-screen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--altia-crema);
+    }
+    
+    .loading-screen .brand-loading {
+      font-weight: 700;
+      letter-spacing: 5px;
+      font-size: 14px;
+      color: var(--altia-azul);
+      margin-bottom: 22px;
+    }
+    
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--altia-divider);
+      border-top-color: var(--altia-verde);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    .error-screen {
+      padding: 60px 24px;
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto;
+      color: var(--altia-negative);
+    }
+    
+    /* ============================================================
+       BREAKPOINTS DESKTOP
+       ============================================================ */
+    
+    @media (min-width: 600px) {
+      body { font-size: 15px; }
+      section { padding: 80px 32px; }
+      .nav { padding: 13px 26px; }
+      .nav-brand { font-size: 12px; }
+      .nav-link { padding: 6px 12px; font-size: 11px; }
+      .hero { padding: 80px 32px 100px; }
+      .hero-line-top { left: 32px; right: 32px; top: 32px; }
+      .hero-content { max-width: 760px; }
+      .hero-meta-top { font-size: 11px; margin-bottom: 56px; }
+      .hero-detalle { font-size: 12px; }
+      .kpis-grid { grid-template-columns: repeat(4, 1fr); }
+      .kpi-card { padding: 26px 22px; }
+      .kpi-card .kpi-label { font-size: 10px; }
+      .kpi-card .kpi-sub { font-size: 11px; }
+      .kpis-tabs, .tabla-tabs { margin-bottom: 28px; }
+      .kpi-tab, .tabla-tab { padding: 12px 18px; font-size: 12px; }
+      .narrativa-block p { font-size: 15px; }
+      .narrativa-block .item-lista { font-size: 15px; }
+      .tabla-reporte { font-size: 12px; }
+      .tabla-reporte thead th { padding: 11px 10px; font-size: 11px; }
+      .tabla-reporte thead th.col-concepto, .tabla-reporte tbody td.concepto {
+        min-width: 160px; max-width: 160px; width: 160px;
+        padding: 11px 14px; font-size: 12px;
+      }
+      .tabla-reporte tbody td { padding: 10px 9px; font-size: 12px; }
+      .tabla-reporte tbody td .monto-cel { display: inline; }
+      .tabla-reporte tbody td .porc-cel { display: none; }
+      .tabla-reporte .fila-resultado td { font-size: 14px; padding: 14px 9px; }
+      .tabla-reporte .fila-resultado td.concepto { font-size: 12px; padding: 14px 14px; }
+      .graficos-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
+      .grafico-card { padding: 22px 20px; }
+      .grafico-card h4 { font-size: 11px; }
+      .grafico-wrap { height: 280px; }
+      .aviso-tabla { font-size: 11px; }
+    }
+    
+    @media (min-width: 1000px) {
+      .section-inner { padding: 0; }
+      .graficos-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    
+    /* Tabla en desktop: ocultar la columna % combinada en celdas (se vuelve formato completo) */
+    @media (min-width: 600px) {
+      .tabla-reporte tbody td .porc-cel { display: none; }
+    }
+
+    /* ============================================================
+       v3 · Ajustes mobile-first
+       ============================================================ */
+    .hero { min-height: auto; padding: 84px 22px 44px; }
+    .hero-scroll-hint { display: none; }
+    .hero-meta-top { margin-bottom: 28px; }
+    .rep-selector { margin-top: 26px; }
+
+    /* Selector segmentado (BTB / Club / Vraba): 3 botones del mismo ancho, sin scroll */
+    .kpis-tabs, .tabla-tabs, .graf-tabs {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+      background: rgba(26,54,76,0.06); border: none; border-radius: 10px;
+      padding: 4px; margin-bottom: 18px; overflow: visible;
+    }
+    .kpi-tab, .tabla-tab, .graf-tab {
+      padding: 10px 4px; font-size: 12px; letter-spacing: 0.3px; text-transform: none;
+      border: none; border-radius: 7px; margin: 0; background: transparent;
+      color: var(--altia-text-suave); font-weight: 500; font-family: inherit; cursor: pointer;
+      white-space: nowrap;
+    }
+    .kpi-tab.active, .tabla-tab.active, .graf-tab.active {
+      background: var(--altia-blanco); color: var(--altia-azul); font-weight: 700;
+      box-shadow: 0 1px 3px rgba(26,54,76,0.15); border: none;
+    }
+    .tabla-tab[data-local="vraba"].active, .graf-tab[data-local="vraba"].active { color: var(--vraba-orange); }
+
+    /* KPIs */
+    .kpi-card { padding: 16px 14px; }
+    .kpi-card .kpi-label { font-size: 10px; letter-spacing: 1.4px; }
+    .kpi-card .kpi-value { font-size: 26px; }
+    .kpi-card .kpi-sub { font-size: 11px; line-height: 1.4; }
+
+    /* Puente Resultado → Inversión → Después de invertir */
+    .puente { margin-top: 18px; border: 1px solid var(--altia-divider); background: var(--altia-blanco); padding: 16px 14px; }
+    .puente-titulo { font-size: 10px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--altia-verde); font-weight: 700; margin-bottom: 14px; }
+    .puente-fila { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 4px 10px; margin-bottom: 12px; }
+    .puente-fila:last-child { margin-bottom: 0; }
+    .puente-label { font-size: 13px; color: var(--altia-gris); }
+    .puente-valor { font-family: var(--font-display); font-size: 20px; color: var(--altia-azul); white-space: nowrap; }
+    .puente-valor.pos { color: var(--altia-positive); }
+    .puente-valor.neg { color: var(--altia-negative); }
+    .puente-barra { grid-column: 1 / -1; height: 8px; background: rgba(26,54,76,0.06); border-radius: 4px; overflow: hidden; }
+    .puente-barra span { display: block; height: 100%; border-radius: 4px; }
+    .puente-fila.total { border-top: 1px solid var(--altia-divider); padding-top: 12px; }
+    .puente-nota { font-size: 11px; color: var(--altia-text-suave); margin-top: 12px; line-height: 1.5; }
+
+    /* Tabla mobile: selector de mes + 3 columnas */
+    .mes-chips { display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; margin-bottom: 12px; }
+    .mes-chip {
+      flex-shrink: 0; font-family: inherit; font-size: 12px; padding: 7px 11px; border-radius: 16px;
+      border: 1px solid var(--altia-divider-strong); background: transparent; color: var(--altia-azul); cursor: pointer;
+    }
+    .mes-chip.active { background: var(--altia-azul); color: var(--altia-blanco); border-color: var(--altia-azul); }
+    .tabla-mobile { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; background: var(--altia-blanco); border: 1px solid var(--altia-divider); }
+    .tabla-mobile td { padding: 12px 12px; border-bottom: 1px solid var(--altia-divider); font-size: 13px; }
+    .tabla-mobile td.tm-monto { text-align: right; font-weight: 600; white-space: nowrap; }
+    .tabla-mobile td.tm-porc { text-align: right; color: var(--altia-text-suave); font-size: 11px; width: 58px; white-space: nowrap; }
+    .tabla-mobile tr.tm-resultado td { background: rgba(117,127,103,0.10); font-weight: 700; font-size: 14px; }
+    .tabla-mobile tr.tm-sub td { color: var(--altia-text-suave); font-style: italic; }
+    .tabla-mobile .neg { color: var(--altia-negative); }
+
+    /* Gráficos */
+    .graficos-grid { gap: 14px; margin-top: 4px; }
+    .grafico-card h4 { font-size: 11px; letter-spacing: 1.4px; margin-bottom: 4px; }
+    .grafico-sub { font-size: 12px; color: var(--altia-text-suave); margin-bottom: 12px; line-height: 1.4; }
+    .grafico-wrap { height: 250px; }
+    .comp-barra { display: flex; height: 26px; border-radius: 5px; overflow: hidden; margin: 6px 0 14px; }
+    .comp-barra span { display: block; height: 100%; }
+    .comp-fila { display: grid; grid-template-columns: 12px 1fr auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--altia-divider); font-size: 13px; }
+    .comp-fila:last-child { border-bottom: none; }
+    .comp-dot { width: 12px; height: 12px; border-radius: 3px; }
+    .comp-val { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .comp-detalle { font-size: 11px; color: var(--altia-text-suave); display: block; }
+
+    @media (min-width: 600px) {
+      .hero { padding: 110px 32px 70px; }
+      .kpi-tab, .tabla-tab, .graf-tab { font-size: 13px; padding: 11px 8px; }
+      .kpis-tabs, .tabla-tabs, .graf-tabs { max-width: 520px; }
+      .kpi-card .kpi-value { font-size: 30px; }
+      .puente { padding: 22px 24px; }
+      .grafico-wrap { height: 280px; }
+    }
+    @media (min-width: 1000px) {
+      .graficos-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="app">
+    <div class="loading-screen">
+      <div class="brand-loading">BACK TO BASICS</div>
+      <div class="spinner"></div>
+    </div>
+  </div>
+  
+  <script>
+    // ============================================================
+    // ESTADO
+    // ============================================================
+    
+    let DATOS = null;
+    let localKPIsActivo = 'btb';
+    let localTablaActivo = 'btb';
+    let chartsActivos = [];
+    let localGraficoActivo = 'btb';
+    let mesTablaActivo = 'total';
+    let REPORTE_ID = (function() {
+      var iny = '';
+      if (iny) return iny;
+      var m = window.location.search.match(/[?&]r=([^&]+)/);
+      return m ? decodeURIComponent(m[1]) : '';
+    })();
+    
+    const CLAVE_USUARIO = (function() {
+      var inyectada = '';
+      if (inyectada && inyectada !== '') return inyectada;
+      var qs = window.location.search;
+      var match = qs.match(/[?&]k=([^&]+)/);
+      return match ? decodeURIComponent(match[1]) : '';
+    })();
+    
+
+    // ============================================================
+    // HELPERS v3
+    // ============================================================
+    function esMobileW() { return window.innerWidth < 600; }
+    function nombreLocal(lk, corto) {
+      const largo = { btb: 'BTB Consolidado', club_birra: 'Club de la Birra', vraba: 'Vraba' };
+      const cortos = { btb: 'BTB', club_birra: 'Club', vraba: 'Vraba' };
+      return (corto ? cortos : largo)[lk];
+    }
+    function filaDe(lk, etiqueta) {
+      const d = DATOS.locales[lk];
+      const n = normalizar(etiqueta);
+      const fs = (d.filasCompletas || []).concat(d.filas || []);
+      for (let i = 0; i < fs.length; i++) if (normalizar(fs[i].etiqueta) === n) return fs[i];
+      return null;
+    }
+    function serieDe(lk, etiqueta) {
+      const f = filaDe(lk, etiqueta);
+      return DATOS.locales[lk].meses.map(function(m) { return f ? (f.valores[m] || 0) : 0; });
+    }
+    function totalDe(lk, etiqueta) { const f = filaDe(lk, etiqueta); return f ? (f.totalPeriodo || 0) : 0; }
+    function mesCorto(m) { return m.substring(0, 3); }
+
+    // Plugin: escribe el valor de cada barra/punto sin necesidad de tocar
+    const pluginEtiquetas = {
+      id: 'etiquetasValor',
+      afterDatasetsDraw: function(chart) {
+        const ctx = chart.ctx;
+        chart.data.datasets.forEach(function(ds, i) {
+          if (!ds.etiqueta) return;
+          const meta = chart.getDatasetMeta(i);
+          if (meta.hidden) return;
+          meta.data.forEach(function(el, j) {
+            const raw = ds.data[j];
+            if (raw === null || raw === undefined) return;
+            const txt = ds.etiqueta(raw, j);
+            if (!txt) return;
+            const pos = el.tooltipPosition();
+            const abajo = ds.etiquetaAbajo ? ds.etiquetaAbajo(raw, j) : raw < 0;
+            ctx.save();
+            ctx.font = '600 ' + (chart.width < 360 ? 9 : 10) + 'px Inter, sans-serif';
+            ctx.fillStyle = ds.etiquetaColor ? ds.etiquetaColor(raw, j) : '#1A364C';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = abajo ? 'top' : 'bottom';
+            let y = pos.y + (abajo ? 4 : -4);
+            if (ds.type !== 'line' && !abajo && el.base !== undefined) y = Math.min(y, el.y - 4);
+            if (ds.type !== 'line' && abajo && el.y !== undefined) y = Math.max(y, el.y + 4);
+            ctx.fillText(txt, pos.x, y);
+            ctx.restore();
+          });
+        });
+      }
+    };
+
+
+    // ============================================================
+    // DATOS: se piden al Apps Script (JSONP, funciona en cualquier navegador)
+    // ============================================================
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzoiluLIrdpIrB6Rdnyy4daFbTuxD10S4GFks97c8fUk5rfo64HKiMkAfqqpxGrUlE/exec';
+    function pedirDatos(forzar, ok, fail) {
+      const cb = 'btbcb_' + Date.now();
+      let terminado = false;
+      const s = document.createElement('script');
+      const timer = setTimeout(function() { if (!terminado) { terminado = true; limpiar(); fail('El servidor tardó demasiado. Probá de nuevo en unos segundos.'); } }, 45000);
+      function limpiar() { try { delete window[cb]; } catch (e) { window[cb] = undefined; } if (s.parentNode) s.parentNode.removeChild(s); clearTimeout(timer); }
+      window[cb] = function(data) {
+        if (terminado) return; terminado = true; limpiar();
+        if (!data || data.error) fail((data && data.mensaje) || 'Error desconocido'); else ok(data);
+      };
+      s.onerror = function() { if (!terminado) { terminado = true; limpiar(); fail('No se pudo conectar con el servidor de datos.'); } };
+      s.src = API_URL + '?api=1&callback=' + cb + '&r=' + encodeURIComponent(REPORTE_ID || '') + (forzar ? '&f=1' : '') + '&t=' + Date.now();
+      document.body.appendChild(s);
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    
+    window.addEventListener('DOMContentLoaded', function() {
+      cargarDatos(false);
+    });
+    
+    // Re-render si cambia tamaño (mobile <-> desktop)
+    let lastWidth = window.innerWidth;
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(function() {
+        const nw = window.innerWidth;
+        if ((lastWidth < 600 && nw >= 600) || (lastWidth >= 600 && nw < 600)) {
+          lastWidth = nw;
+          if (DATOS) renderizar();
+        }
+        lastWidth = nw;
+      }, 200);
+    });
+    
+    function cargarDatos(forzar) {
+      if (DATOS) {
+        document.getElementById('app').innerHTML =
+          '<div class="loading-screen"><div class="brand-loading">BACK TO BASICS</div><div class="spinner"></div></div>';
+      }
+      pedirDatos(forzar === true, function(data) {
+        DATOS = data;
+        if (REPORTE_ID === '' && data && data.reporte) REPORTE_ID = data.reporte.id;
+        try { history.replaceState(null, '', '?r=' + encodeURIComponent(data.reporte.id)); } catch (e) {}
+        renderizar();
+      }, function(msg) {
+        document.getElementById('app').innerHTML =
+          '<div class="error-screen"><h2>No se pudo cargar el reporte</h2><p>' + msg + '</p>' +
+          '<p><button class="btn-actualizar" style="color:#1A364C;border-color:#1A364C" onclick="cargarDatos(false)">Reintentar</button></p></div>';
+      });
+    }
+    
+    // ============================================================
+    // RENDER PRINCIPAL
+    // ============================================================
+    
+    function renderizar() {
+      destruirCharts();
+      
+      if (DATOS.error) {
+        document.getElementById('app').innerHTML = 
+          '<div class="error-screen"><h2>Error</h2><p>' + DATOS.mensaje + '</p></div>';
+        return;
+      }
+      
+      const html = 
+        renderNav() +
+        renderHero() +
+        renderKPIs() +
+        renderSeccionesDoc('pre') +
+        renderTabla() +
+        renderGraficos() +
+        renderSeccionesDoc('post') +
+        renderFooter();
+      
+      document.getElementById('app').innerHTML = html;
+      
+      setTimeout(function() {
+        dibujarGraficos();
+        configurarScrollNav();
+      }, 50);
+    }
+    
+    // ============================================================
+    // NAV
+    // ============================================================
+    
+    function renderNav() {
+      return '<nav class="nav" id="topNav">' +
+        '<div class="nav-brand">BACK TO BASICS</div>' +
+        '<div class="nav-links">' +
+        '<button class="nav-link" onclick="scrollA(\'kpis\')">Resultados</button>' +
+        '<button class="nav-link" onclick="scrollA(\'tabla\')">Detalle</button>' +
+        '<button class="nav-link" onclick="scrollA(\'graficos\')">Gráficos</button>' +
+        '</div>' +
+        '</nav>';
+    }
+    
+    function scrollA(id) {
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function configurarScrollNav() {
+      const nav = document.getElementById('topNav');
+      if (!nav) return;
+      function check() {
+        if (window.scrollY < 80) nav.classList.add('hidden');
+        else nav.classList.remove('hidden');
+      }
+      window.addEventListener('scroll', check);
+      check();
+    }
+    
+    // ============================================================
+    // HERO · Portada ALTIA minimalista (sin foto)
+    // ============================================================
+    
+    function renderHero() {
+      return '<section class="hero">' +
+        '<div class="hero-line-top"></div>' +
+        '<div class="hero-content">' +
+        '<div class="hero-meta-top">Reporte Semestral · Inversores</div>' +
+        '<h1>Back to Basics</h1>' +
+        '<div class="hero-sub">Construimos valor a largo plazo.</div>' +
+        '<div class="hero-divider"></div>' +
+        '<div class="hero-detalle">' +
+        '<div>Período: ' + DATOS.periodo.titulo + '</div>' +
+        '<div>Club de la Birra · Vraba</div>' +
+        '</div>' +
+        renderSelectorReporte() +
+        '</div>' +
+        '<div class="hero-scroll-hint">↓ Scroll</div>' +
+        '</section>';
+    }
+    
+    function renderSelectorReporte() {
+      const lista = DATOS.reportes || [];
+      if (lista.length < 2) return '';
+      const btns = lista.map(function(r) {
+        const cls = (r.id === DATOS.reporte.id) ? 'rep-btn active' : 'rep-btn';
+        return '<button class="' + cls + '" onclick="cambiarReporte(\'' + r.id + '\')">' + r.etiqueta + '</button>';
+      }).join('');
+      return '<div class="rep-selector"><div class="rep-label">Reportes</div><div class="rep-btns">' + btns + '</div></div>';
+    }
+    
+    function cambiarReporte(id) {
+      if (DATOS && DATOS.reporte && DATOS.reporte.id === id) return;
+      REPORTE_ID = id;
+      cargarDatos(false);
+      window.scrollTo(0, 0);
+    }
+    
+    // ============================================================
+    // KPIs HERO
+    // ============================================================
+    
+    function renderKPIs() {
+      const tabs = ['btb', 'club_birra', 'vraba'].map(function(lk) {
+        const cls = lk === localKPIsActivo ? 'kpi-tab active' : 'kpi-tab';
+        return '<button class="' + cls + '" onclick="cambiarKPILocal(\'' + lk + '\')">' + nombreLocal(lk, esMobileW()) + '</button>';
+      }).join('');
+      
+      const k = DATOS.heroKPIs[localKPIsActivo];
+      const cls = (v) => v >= 0 ? 'positivo' : 'negativo';
+      
+      const cajaSub = k.incluyeHistorico
+        ? 'Al cierre del período · incluye ejercicios anteriores, neto de dividendos'
+        : 'Al cierre del período';
+      
+      const cards = [
+        { label: 'Venta Neta', value: formatMoneyAuto(k.ventaNeta), sub: 'Total del período', tipo: '' },
+        { label: 'Resultado del Período', value: formatMoneyAuto(k.resultado), sub: 'Antes de inversiones · ' + formatPorc(k.margenOperativo) + ' sobre ventas', tipo: cls(k.resultado) },
+        { label: 'Inversión en el Local', value: formatMoneyAuto(Math.abs(k.inversion || 0)), sub: 'Resultado después de invertir: ' + formatMoneyAuto(k.resultadoPostInv), tipo: '' },
+        { label: 'Caja Acumulada', value: formatMoneyAuto(k.cajaAcumulada), sub: cajaSub, tipo: cls(k.cajaAcumulada) }
+      ];
+      
+      const cardsHTML = cards.map(function(c) {
+        return '<div class="kpi-card ' + c.tipo + '">' +
+          '<div class="kpi-label">' + c.label + '</div>' +
+          '<div class="kpi-value">' + c.value + '</div>' +
+          '<div class="kpi-sub">' + c.sub + '</div>' +
+          '</div>';
+      }).join('');
+      
+      return '<section class="kpis-section" id="kpis">' +
+        '<div class="section-inner">' +
+        '<div class="section-eyebrow">Resumen del Período</div>' +
+        '<h2 class="section-title">Resultados Financieros</h2>' +
+        '<div class="kpis-tabs">' + tabs + '</div>' +
+        '<div class="kpis-grid">' + cardsHTML + '</div>' +
+        renderPuente(k) +
+        '</div>' +
+        '</section>';
+    }
+    
+
+    function renderPuente(k) {
+      const res = k.resultado || 0;
+      const inv = Math.abs(k.inversion || 0);
+      const post = (k.resultadoPostInv !== undefined && k.resultadoPostInv !== null) ? k.resultadoPostInv : (res - inv);
+      const max = Math.max(Math.abs(res), inv, Math.abs(post), 1);
+      const w = function(v) { return Math.max(2, Math.abs(v) / max * 100).toFixed(1) + '%'; };
+      const fila = function(label, valor, color, cls, extra) {
+        return '<div class="puente-fila ' + (extra || '') + '">' +
+          '<div class="puente-label">' + label + '</div>' +
+          '<div class="puente-valor ' + cls + '">' + formatMoneyCorto(valor) + '</div>' +
+          '<div class="puente-barra"><span style="width:' + w(valor) + ';background:' + color + '"></span></div>' +
+          '</div>';
+      };
+      return '<div class="puente">' +
+        '<div class="puente-titulo">Resultado e inversión del período</div>' +
+        fila('Resultado del período', res, res >= 0 ? '#4A7C59' : '#A04545', res >= 0 ? 'pos' : 'neg') +
+        fila('Invertido en los locales', -inv, '#B08862', '') +
+        fila('Después de invertir', post, post >= 0 ? '#4A7C59' : '#A04545', post >= 0 ? 'pos' : 'neg', 'total') +
+        '<div class="puente-nota">La inversión es obra, equipamiento y ambientación de los locales para aumentar la venta. No es gasto operativo.</div>' +
+        '</div>';
+    }
+
+    function cambiarKPILocal(lk) {
+      localKPIsActivo = lk;
+      const sec = document.getElementById('kpis');
+      if (sec) {
+        const nueva = renderKPIs();
+        const tmp = document.createElement('div');
+        tmp.innerHTML = nueva;
+        sec.parentNode.replaceChild(tmp.firstElementChild, sec);
+      }
+    }
+    
+    // ============================================================
+    // NARRATIVA
+    // ============================================================
+    
+    // Renderiza las secciones del Doc en orden. posicion='pre' → todas las que
+    // NO contengan "conclusion" en el título (van antes de la tabla).
+    // posicion='post' → las que SÍ contienen "conclusion" (van después de los gráficos).
+    function renderSeccionesDoc(posicion) {
+      const secciones = (DATOS.textos && DATOS.textos.secciones) || [];
+      if (secciones.length === 0) return '';
+      
+      let html = '';
+      secciones.forEach(function(sec) {
+        const esConclusion = normalizar(sec.titulo).indexOf('conclusion') !== -1;
+        if (posicion === 'pre' && esConclusion) return;
+        if (posicion === 'post' && !esConclusion) return;
+        html += renderNarrativa(sec.titulo, sec.contenido);
+      });
+      return html;
+    }
+    
+    function renderNarrativa(titulo, texto) {
+      if (!texto || !texto.trim()) return '';
+      
+      const lineas = texto.split('\n');
+      let html = '';
+      lineas.forEach(function(linea) {
+        const t = linea.trim();
+        if (!t) return;
+        if (t.indexOf('• ') === 0) {
+          html += '<div class="item-lista">' + t.substring(2) + '</div>';
+        } else {
+          html += '<p>' + t + '</p>';
+        }
+      });
+      
+      return '<section class="narrativa-section">' +
+        '<h2 class="section-title">' + titulo + '</h2>' +
+        '<div class="narrativa-block">' + html + '</div>' +
+        '</section>';
+    }
+    
+    // ============================================================
+    // TABLA (sin drill-down)
+    // ============================================================
+    
+    function renderTabla() {
+      const datos = DATOS.locales[localTablaActivo];
+      const meses = datos.meses;
+      const esMobile = window.innerWidth < 600;
+      const mesAbrev = (m) => esMobile ? m.substring(0, 3) : m;
+      
+      const tabs = ['btb', 'club_birra', 'vraba'].map(function(lk) {
+        const cls = lk === localTablaActivo ? 'tabla-tab active' : 'tabla-tab';
+        return '<button class="' + cls + '" data-local="' + lk + '" onclick="cambiarTablaLocal(\'' + lk + '\')">' + nombreLocal(lk, esMobile) + '</button>';
+      }).join('');
+      if (esMobile) return renderTablaMobile(datos, tabs);
+      
+      // Header
+      let head = '<th class="col-concepto">' + datos.nombre + '</th>';
+      meses.forEach(function(m) { head += '<th class="col-mes">' + mesAbrev(m) + '</th>'; });
+      head += '<th class="col-total">Total Período</th>';
+      
+      // Body
+      let body = '';
+      datos.filas.forEach(function(fila) {
+        const norm = normalizar(fila.etiqueta);
+        if (norm === 'margen operativo') return; // igual a Resultado: no repetir
+        const esResultado = norm === 'resultado';
+        const esInversion = norm === 'inversion local' || norm === 'res post inv';
+        const clase = esResultado ? 'fila-resultado' : (esInversion ? 'fila-inversion' : '');
+        
+        body += '<tr class="' + clase + '">';
+        body += '<td class="concepto">' + abreviarConcepto(fila.etiqueta) + '</td>';
+        
+        meses.forEach(function(m) {
+          const v = fila.valores[m];
+          const p = fila.porcentajes[m];
+          const cls = (v !== null && v < 0) ? 'neg' : '';
+          const montoStr = formatMoneyAuto(v);
+          let inner = '<span class="monto-cel">' + montoStr + '</span>';
+          // En mobile: % como segunda línea pequeña (si aplica)
+          if (esMobile && !fila.esVentaTotal && p !== null && p !== undefined) {
+            inner += '<span class="porc-cel">' + formatPorc(p) + '</span>';
+          }
+          body += '<td class="' + cls + '">' + inner + '</td>';
+        });
+        
+        const tCls = (fila.totalPeriodo !== null && fila.totalPeriodo < 0) ? 'neg' : '';
+        const totalStr = formatMoneyAuto(fila.totalPeriodo);
+        let innerT = '<span class="monto-cel">' + totalStr + '</span>';
+        if (esMobile && !fila.esVentaTotal && fila.totalPeriodoPorc !== null && fila.totalPeriodoPorc !== undefined) {
+          innerT += '<span class="porc-cel">' + formatPorc(fila.totalPeriodoPorc) + '</span>';
+        }
+        body += '<td class="col-total-celda ' + tCls + '">' + innerT + '</td>';
+        body += '</tr>';
+      });
+      
+      const wrapCls = localTablaActivo === 'vraba' ? 'tabla-wrap vraba-theme' : 'tabla-wrap';
+      
+      return '<section class="tabla-section" id="tabla">' +
+        '<div class="section-inner">' +
+        '<div class="section-eyebrow">Detalle Mensual</div>' +
+        '<h2 class="section-title">Resultados por Unidad</h2>' +
+        '<div class="tabla-tabs">' + tabs + '</div>' +
+        '<div class="' + wrapCls + '">' +
+        '<table class="tabla-reporte"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>' +
+        '</div>' +
+        '<div class="aviso-tabla">Valores expresados en pesos argentinos. Período: ' + DATOS.periodo.titulo + '.</div>' +
+        '</div>' +
+        '</section>';
+    }
+    
+
+    function renderTablaMobile(datos, tabs) {
+      const meses = datos.meses;
+      const opciones = ['total'].concat(meses);
+      const chips = opciones.map(function(m) {
+        const cls = m === mesTablaActivo ? 'mes-chip active' : 'mes-chip';
+        const lbl = m === 'total' ? 'Total período' : mesCorto(m);
+        return '<button class="' + cls + '" onclick="cambiarMesTabla(\'' + m + '\')">' + lbl + '</button>';
+      }).join('');
+      let body = '';
+      datos.filas.forEach(function(fila) {
+        const norm = normalizar(fila.etiqueta);
+        if (norm === 'margen operativo') return; // es igual a Resultado: no repetir
+        const v = mesTablaActivo === 'total' ? fila.totalPeriodo : fila.valores[mesTablaActivo];
+        const p = mesTablaActivo === 'total' ? fila.totalPeriodoPorc : fila.porcentajes[mesTablaActivo];
+        const cls = norm === 'resultado' ? 'tm-resultado' : ((norm === 'inversion local' || norm === 'res post inv') ? 'tm-sub' : '');
+        const neg = (v !== null && v < 0) ? ' neg' : '';
+        body += '<tr class="' + cls + '"><td>' + abreviarConcepto(fila.etiqueta) + '</td>' +
+          '<td class="tm-monto' + neg + '">' + formatMoneyCorto(v) + '</td>' +
+          '<td class="tm-porc">' + ((fila.esVentaTotal || p === null || p === undefined) ? '' : formatPorc(p)) + '</td></tr>';
+      });
+      return '<section class="tabla-section" id="tabla">' +
+        '<div class="section-inner">' +
+        '<div class="section-eyebrow">Detalle Mensual</div>' +
+        '<h2 class="section-title">Resultados por Unidad</h2>' +
+        '<div class="tabla-tabs">' + tabs + '</div>' +
+        '<div class="mes-chips">' + chips + '</div>' +
+        '<table class="tabla-mobile"><tbody>' + body + '</tbody></table>' +
+        '<div class="aviso-tabla">Pesos argentinos. % sobre venta neta. Período: ' + DATOS.periodo.titulo + '.</div>' +
+        '</div>' +
+        '</section>';
+    }
+
+    function cambiarMesTabla(m) {
+      mesTablaActivo = m;
+      cambiarTablaLocal(localTablaActivo);
+    }
+
+    function cambiarTablaLocal(lk) {
+      localTablaActivo = lk;
+      const sec = document.getElementById('tabla');
+      if (sec) {
+        const nueva = renderTabla();
+        const tmp = document.createElement('div');
+        tmp.innerHTML = nueva;
+        sec.parentNode.replaceChild(tmp.firstElementChild, sec);
+      }
+    }
+    
+    // ============================================================
+    // GRÁFICOS
+    // ============================================================
+    
+    function renderGraficos() {
+      const lk = localGraficoActivo;
+      const tabs = ['btb', 'club_birra', 'vraba'].map(function(x) {
+        const cls = x === lk ? 'graf-tab active' : 'graf-tab';
+        return '<button class="' + cls + '" data-local="' + x + '" onclick="cambiarGraficoLocal(\'' + x + '\')">' + nombreLocal(x, esMobileW()) + '</button>';
+      }).join('');
+      const margenTot = filaDe(lk, 'Margen Operativo');
+      const mt = margenTot ? margenTot.totalPeriodoPorc : null;
+      return '<section class="graficos-section" id="graficos">' +
+        '<div class="section-inner">' +
+        '<div class="section-eyebrow">Evolución del Negocio</div>' +
+        '<h2 class="section-title">Visión Ejecutiva</h2>' +
+        '<div class="graf-tabs">' + tabs + '</div>' +
+        '<div class="graficos-grid">' +
+        '<div class="grafico-card"><h4>Venta neta por mes</h4>' +
+        '<div class="grafico-sub">' + (lk === 'btb' ? 'Club y Vraba apilados · total del mes arriba' : 'Total del mes') + '</div>' +
+        '<div class="grafico-wrap"><canvas id="chart1"></canvas></div></div>' +
+        '<div class="grafico-card"><h4>Resultado e inversión por mes</h4>' +
+        '<div class="grafico-sub">Resultado operativo del mes y lo invertido en el local, por separado</div>' +
+        '<div class="grafico-wrap"><canvas id="chart2"></canvas></div></div>' +
+        '<div class="grafico-card"><h4>Margen operativo por mes</h4>' +
+        '<div class="grafico-sub">Resultado sobre venta neta · período: <b>' + formatPorc(mt) + '</b></div>' +
+        '<div class="grafico-wrap"><canvas id="chart3"></canvas></div></div>' +
+        '<div class="grafico-card"><h4>¿A dónde va cada $100 de venta?</h4>' +
+        '<div class="grafico-sub">Total del período, sobre venta bruta (con IVA)</div>' +
+        renderComposicion(lk) + '</div>' +
+        '</div>' +
+        '</div>' +
+        '</section>';
+    }
+
+    function renderComposicion(lk) {
+      const bruta = totalDe(lk, 'Venta Bruta TOTAL');
+      if (!bruta) return '<div class="grafico-sub">Sin datos</div>';
+      const items = [
+        { n: 'Mercadería', d: 'Alimentos y bebidas (CMV)', v: Math.abs(totalDe(lk, 'CMV')), c: '#A04545' },
+        { n: 'Comisiones e impuestos', d: 'Apps, tarjetas, Mercado Pago, IIBB', v: Math.abs(totalDe(lk, 'Costos Variables Comerciales')), c: '#B08862' },
+        { n: 'Gastos fijos', d: 'Sueldos, alquiler, servicios, IVA y otros', v: Math.abs(totalDe(lk, 'Total Gastos Fijos')), c: '#1A364C' },
+        { n: 'Resultado', d: 'Lo que queda antes de invertir', v: totalDe(lk, 'Margen Operativo'), c: '#4A7C59' }
+      ];
+      const inv = Math.abs(totalDe(lk, 'Inversion Local'));
+      const pos = items.filter(function(i) { return i.v > 0; });
+      const sumPos = pos.reduce(function(a, i) { return a + i.v; }, 0) || 1;
+      const barra = pos.map(function(i) { return '<span style="width:' + (i.v / sumPos * 100).toFixed(2) + '%;background:' + i.c + '"></span>'; }).join('');
+      const filas = items.map(function(i) {
+        const pct = i.v / bruta * 100;
+        const neg = i.v < 0 ? ' style="color:#A04545"' : '';
+        return '<div class="comp-fila"><span class="comp-dot" style="background:' + i.c + '"></span>' +
+          '<span>' + i.n + '<span class="comp-detalle">' + i.d + '</span></span>' +
+          '<span class="comp-val"' + neg + '>$' + pct.toFixed(1).replace('.', ',') + '</span></div>';
+      }).join('');
+      const invFila = '<div class="comp-fila"><span class="comp-dot" style="background:transparent;border:2px dashed #B08862"></span>' +
+        '<span>Inversión en el local<span class="comp-detalle">Aparte del resultado</span></span>' +
+        '<span class="comp-val">$' + (inv / bruta * 100).toFixed(1).replace('.', ',') + '</span></div>';
+      return '<div class="comp-barra">' + barra + '</div>' + filas + invFila;
+    }
+
+    function cambiarGraficoLocal(lk) {
+      localGraficoActivo = lk;
+      destruirCharts();
+      const sec = document.getElementById('graficos');
+      if (sec) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = renderGraficos();
+        sec.parentNode.replaceChild(tmp.firstElementChild, sec);
+      }
+      setTimeout(dibujarGraficos, 30);
+    }
+
+    function dibujarGraficos() {
+      if (!DATOS || !DATOS.locales) return;
+      const lk = localGraficoActivo;
+      const meses = DATOS.locales[lk].meses;
+      if (!meses || meses.length === 0) return;
+      const labels = meses.map(mesCorto);
+      const colorAzul = '#1A364C';
+      const colorNaranja = '#FF671F';
+      const colorPos = '#4A7C59';
+      const colorNeg = '#A04545';
+      const colorAccent = '#B08862';
+      const grid = 'rgba(26, 54, 76, 0.08)';
+      const fMon = function(v) { const a = Math.abs(v); const s = a >= 10e6 ? Math.round(a / 1e6) + 'M' : (a / 1e6).toFixed(1).replace('.', ',') + 'M'; return (v < 0 ? '-' : '') + s; };
+
+      // 1) Venta neta por mes
+      const ctx1 = document.getElementById('chart1');
+      if (ctx1) {
+        let datasets;
+        if (lk === 'btb') {
+          const club = serieDe('club_birra', 'Venta NETA TOTAL');
+          const vr = serieDe('vraba', 'Venta NETA TOTAL');
+          const tot = club.map(function(v, i) { return v + vr[i]; });
+          datasets = [
+            { label: 'Club', data: club, backgroundColor: colorAzul, stack: 'v', borderRadius: 2 },
+            { label: 'Vraba', data: vr, backgroundColor: colorNaranja, stack: 'v', borderRadius: 2,
+              etiqueta: function(v, j) { return fMon(tot[j]); } }
+          ];
+        } else {
+          datasets = [{ label: nombreLocal(lk), data: serieDe(lk, 'Venta NETA TOTAL'),
+            backgroundColor: lk === 'vraba' ? colorNaranja : colorAzul, borderRadius: 2,
+            etiqueta: function(v) { return fMon(v); } }];
+        }
+        chartsActivos.push(new Chart(ctx1.getContext('2d'), {
+          type: 'bar', data: { labels: labels, datasets: datasets },
+          options: opcionesV3('money', grid, lk === 'btb', lk === 'btb'), plugins: [pluginEtiquetas]
+        }));
+      }
+
+      // 2) Resultado e inversión por mes (barras separadas)
+      const ctx2 = document.getElementById('chart2');
+      if (ctx2) {
+        const res = serieDe(lk, 'Resultado');
+        const inv = serieDe(lk, 'Inversion Local').map(function(v) { return -Math.abs(v); });
+        chartsActivos.push(new Chart(ctx2.getContext('2d'), {
+          type: 'bar',
+          data: { labels: labels, datasets: [
+            { label: 'Resultado', data: res, borderRadius: 2,
+              backgroundColor: res.map(function(v) { return v >= 0 ? colorPos : colorNeg; }),
+              etiqueta: function(v) { return fMon(v); },
+              etiquetaColor: function(v) { return v >= 0 ? colorPos : colorNeg; } },
+            { label: 'Inversión', data: inv, borderRadius: 2, backgroundColor: colorAccent,
+              etiqueta: function(v) { return Math.abs(v) >= 1e6 ? fMon(Math.abs(v)) : ''; },
+              etiquetaColor: function() { return '#8A6A48'; } }
+          ] },
+          options: opcionesV3('money', grid, false, true, [
+            { text: 'Resultado', fillStyle: colorPos }, { text: 'Inversión', fillStyle: colorAccent }
+          ]),
+          plugins: [pluginEtiquetas]
+        }));
+      }
+
+      // 3) Margen operativo por mes, con el % escrito
+      const ctx3 = document.getElementById('chart3');
+      if (ctx3) {
+        const mo = filaDe(lk, 'Margen Operativo');
+        const pct = meses.map(function(m) {
+          if (lk === 'vraba' && m === 'Diciembre') return null; // mes de arranque
+          const p = mo ? mo.porcentajes[m] : null;
+          return (p !== null && p !== undefined) ? p * 100 : null;
+        });
+        chartsActivos.push(new Chart(ctx3.getContext('2d'), {
+          type: 'bar',
+          data: { labels: labels, datasets: [{ label: 'Margen', data: pct, borderRadius: 2,
+            backgroundColor: pct.map(function(v) { return v === null ? 'transparent' : (v >= 0 ? colorPos : colorNeg); }),
+            etiqueta: function(v) { return v.toFixed(1).replace('.', ',') + '%'; },
+            etiquetaColor: function(v) { return v >= 0 ? colorPos : colorNeg; } }] },
+          options: opcionesV3('porcentaje', grid, false, false), plugins: [pluginEtiquetas]
+        }));
+      }
+    }
+
+    function opcionesV3(tipo, gridColor, stacked, mostrarLeyenda, leyendaCustom) {
+      const o = {
+        responsive: true, maintainAspectRatio: false,
+        layout: { padding: { top: 18, bottom: 4 } },
+        plugins: {
+          legend: { display: !!mostrarLeyenda, position: 'bottom',
+            labels: { font: { size: 11, family: 'Inter, sans-serif' }, boxWidth: 10, padding: 10, color: '#1A364C' } },
+          tooltip: { callbacks: { label: function(c) {
+            const v = c.parsed.y;
+            if (v === null || v === undefined) return '';
+            return c.dataset.label + ': ' + (tipo === 'money' ? formatMoneyCorto(tipo === 'money' && c.dataset.label === 'Inversión' ? Math.abs(v) : v) : v.toFixed(1) + '%');
+          } } }
+        },
+        scales: {
+          y: { stacked: !!stacked, grace: '12%',
+            ticks: { font: { size: 10, family: 'Inter, sans-serif' }, color: '#5A6878', maxTicksLimit: 5,
+              callback: function(v) { return tipo === 'money' ? formatMoneyCorto(v) : v + '%'; } },
+            grid: { color: function(c) { return c.tick && c.tick.value === 0 ? 'rgba(26,54,76,0.35)' : gridColor; } } },
+          x: { stacked: !!stacked, ticks: { font: { size: 11, family: 'Inter, sans-serif' }, color: '#5A6878' }, grid: { display: false } }
+        }
+      };
+      if (leyendaCustom) o.plugins.legend.labels.generateLabels = function() {
+        return leyendaCustom.map(function(l) { return { text: l.text, fillStyle: l.fillStyle, strokeStyle: l.fillStyle, lineWidth: 0 }; });
+      };
+      return o;
+    }
+
+    function opcionesChart(tipo, gridColor, forzarStack) {
+      const stacked = forzarStack === true || tipo === 'porcentaje';
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { font: { size: 10, family: 'Inter, sans-serif' }, boxWidth: 10, padding: 8, color: '#1A364C' }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                if (tipo === 'money') {
+                  let txt = ctx.dataset.label + ': ' + formatMoneyAuto(ctx.parsed.y);
+                  // Si es un gráfico apilado de barras, mostrar % sobre el total del mes
+                  if (forzarStack && ctx.dataset.type !== 'line') {
+                    const idx = ctx.dataIndex;
+                    let totalMes = 0;
+                    ctx.chart.data.datasets.forEach(function(ds) {
+                      if (ds.type !== 'line' && typeof ds.data[idx] === 'number') totalMes += ds.data[idx];
+                    });
+                    if (totalMes > 0) {
+                      const pct = (ctx.parsed.y / totalMes) * 100;
+                      txt += ' (' + pct.toFixed(0) + '% del mes)';
+                    }
+                  }
+                  return txt;
+                }
+                return ctx.dataset.label + ': ' + (ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) + '%' : 'N/A');
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            stacked: stacked,
+            ticks: {
+              font: { size: 9, family: 'Inter, sans-serif' },
+              color: '#5A6878',
+              callback: function(v) { return tipo === 'money' ? formatMoneyCorto(v) : v + '%'; }
+            },
+            grid: { color: gridColor }
+          },
+          x: {
+            stacked: stacked,
+            ticks: { font: { size: 9, family: 'Inter, sans-serif' }, color: '#5A6878' },
+            grid: { display: false }
+          }
+        }
+      };
+    }
+    
+    function destruirCharts() {
+      chartsActivos.forEach(function(c) { try { c.destroy(); } catch(e){} });
+      chartsActivos = [];
+    }
+    
+    // ============================================================
+    // FOOTER
+    // ============================================================
+    
+    function renderFooter() {
+      const cacheLabel = DATOS.desdeCache 
+        ? 'Datos del ' + DATOS.cacheTimestamp 
+        : 'Actualizado: ' + DATOS.cacheTimestamp;
+      
+      return '<footer class="footer">' +
+        '<div class="footer-brand">BACK TO BASICS</div>' +
+        '<div class="footer-line">REPORTE SEMESTRAL · ' + DATOS.periodo.titulo + '</div>' +
+        '<div class="footer-line">Consultas: <a class="footer-mail" href="mailto:btbinformacion@gmail.com">btbinformacion@gmail.com</a></div>' +
+        '<div class="footer-update">' + cacheLabel +
+        '<button class="btn-actualizar" onclick="cargarDatos(true)">Actualizar</button>' +
+        '</div>' +
+        '</footer>';
+    }
+    
+    // ============================================================
+    // HELPERS
+    // ============================================================
+    
+    function normalizar(s) {
+      return String(s || '').toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, ' ').trim();
+    }
+    
+    function abreviarConcepto(e) {
+      const esMobile = window.innerWidth < 600;
+      const desktop = {
+        'venta neta total': 'Venta Neta',
+        'resultado': 'Resultado del Período',
+        'inversion local': 'Inversión en el Local',
+        'res post inv': 'Resultado después de Inversión'
+      };
+      const mobile = {
+        'venta neta total': 'Venta Neta',
+        'cmv': 'CMV',
+        'costos variables totales': 'Costos Variables',
+        'contribucion marginal bruta': 'Contrib. Marginal',
+        'total gastos fijos': 'Gastos Fijos',
+        'margen operativo': 'Margen Operat.',
+        'resultado': 'Resultado',
+        'inversion local': 'Inversión Local',
+        'res post inv': 'Result. post Inv.'
+      };
+      const map = esMobile ? mobile : desktop;
+      return map[normalizar(e)] || e;
+    }
+    
+    function formatMoneyAuto(v) {
+      if (v === null || v === undefined || isNaN(v)) return '–';
+      const esMobile = window.innerWidth < 600;
+      return esMobile ? formatMoneyCorto(v) : formatMoneyCompleto(v);
+    }
+    
+    function formatMoneyCompleto(v) {
+      if (v === null || v === undefined || isNaN(v)) return '–';
+      const neg = v < 0;
+      const abs = Math.abs(v);
+      const f = abs.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+      return (neg ? '-$' : '$') + f;
+    }
+    
+    function formatMoneyCorto(v) {
+      if (v === null || v === undefined || isNaN(v)) return '–';
+      const neg = v < 0;
+      const abs = Math.abs(v);
+      let str;
+      if (abs >= 1e6) {
+        if (abs >= 10e6) str = Math.round(abs / 1e6) + 'M';
+        else str = (abs / 1e6).toFixed(1).replace('.', ',') + 'M';
+      } else if (abs >= 1e3) {
+        str = Math.round(abs / 1e3) + 'K';
+      } else if (abs > 0) {
+        str = Math.round(abs).toString();
+      } else {
+        str = '0';
+      }
+      return (neg ? '-$' : '$') + str;
+    }
+    
+    function formatPorc(v) {
+      if (v === null || v === undefined || isNaN(v)) return '–';
+      return (v * 100).toFixed(1).replace('.', ',') + '%';
+    }
+  </script>
+  
+</body>
+</html>
