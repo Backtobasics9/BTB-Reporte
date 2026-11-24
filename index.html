@@ -809,6 +809,35 @@
     @media (min-width: 1000px) {
       .graficos-grid { grid-template-columns: 1fr 1fr; }
     }
+
+    /* v4 · retoques mobile */
+    section[id] { scroll-margin-top: 64px; }
+    .nav { padding: 12px 18px; }
+    .nav-brand { font-size: 13px; letter-spacing: 3px; white-space: nowrap; }
+    .nav-links { gap: 0; }
+    .nav-link { font-size: 11px; letter-spacing: 0.6px; padding: 6px 8px; }
+    .hero { padding: 72px 20px 36px; }
+    .hero-line-top { display: none; }
+    .hero-meta-top { font-size: 10px; letter-spacing: 1.6px; margin-bottom: 18px; }
+    .hero h1 { font-size: 40px; line-height: 1.05; margin-bottom: 8px; }
+    .hero .hero-sub { font-size: 17px; margin-bottom: 22px; }
+    .hero-divider { margin-bottom: 18px; width: 48px; }
+    .hero-detalle { font-size: 11px; letter-spacing: 1.2px; line-height: 1.8; }
+    .rep-selector { margin-top: 20px; }
+    .rep-label { letter-spacing: 1.6px; }
+    .rep-btn { font-size: 12px; letter-spacing: 0.2px; padding: 8px 14px; }
+    .section-eyebrow { letter-spacing: 1.8px; }
+    section { padding: 44px 18px; }
+    .section-title { margin-bottom: 20px; }
+    @media (min-width: 600px) {
+      .hero { padding: 110px 32px 70px; }
+      .hero-line-top { display: block; }
+      .hero h1 { font-size: 64px; }
+      .hero-meta-top { letter-spacing: 2.5px; margin-bottom: 40px; }
+      .hero-detalle { letter-spacing: 2.5px; }
+      section { padding: 80px 32px; }
+      .nav-link { font-size: 11px; letter-spacing: 1px; padding: 6px 12px; }
+    }
   </style>
 </head>
 <body>
@@ -998,9 +1027,9 @@
     
     function renderNav() {
       return '<nav class="nav" id="topNav">' +
-        '<div class="nav-brand">BACK TO BASICS</div>' +
+        '<div class="nav-brand">' + (esMobileW() ? 'BTB' : 'BACK TO BASICS') + '</div>' +
         '<div class="nav-links">' +
-        '<button class="nav-link" onclick="scrollA(\'kpis\')">Resultados</button>' +
+        '<button class="nav-link" onclick="scrollA(\'kpis\')">Resumen</button>' +
         '<button class="nav-link" onclick="scrollA(\'tabla\')">Detalle</button>' +
         '<button class="nav-link" onclick="scrollA(\'graficos\')">Gráficos</button>' +
         '</div>' +
@@ -1083,7 +1112,9 @@
         { label: 'Venta Neta', value: formatMoneyAuto(k.ventaNeta), sub: 'Total del período', tipo: '' },
         { label: 'Resultado del Período', value: formatMoneyAuto(k.resultado), sub: 'Antes de inversiones · ' + formatPorc(k.margenOperativo) + ' sobre ventas', tipo: cls(k.resultado) },
         { label: 'Inversión en el Local', value: formatMoneyAuto(Math.abs(k.inversion || 0)), sub: 'Resultado después de invertir: ' + formatMoneyAuto(k.resultadoPostInv), tipo: '' },
-        { label: 'Caja Acumulada', value: formatMoneyAuto(k.cajaAcumulada), sub: cajaSub, tipo: cls(k.cajaAcumulada) }
+        localKPIsActivo === 'btb'
+          ? { label: 'Caja Acumulada', value: formatMoneyAuto(k.cajaAcumulada), sub: cajaSub, tipo: cls(k.cajaAcumulada) }
+          : { label: 'Margen Operativo', value: formatPorc(k.margenOperativo), sub: 'Resultado sobre venta neta del período', tipo: cls(k.margenOperativo || 0) }
       ];
       
       const cardsHTML = cards.map(function(c) {
